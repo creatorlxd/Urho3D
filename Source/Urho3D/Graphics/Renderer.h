@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2008-2017 the Urho3D project.
+// Copyright (c) 2008-2018 the Urho3D project.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -175,12 +175,12 @@ class URHO3D_API Renderer : public Object
     URHO3D_OBJECT(Renderer, Object);
 
 public:
-    typedef void(Object::*ShadowMapFilter)(View* view, Texture2D* shadowMap, float blurScale);
+    using ShadowMapFilter = void(Object::*)(View* view, Texture2D* shadowMap, float blurScale);
 
     /// Construct.
-    Renderer(Context* context);
+    explicit Renderer(Context* context);
     /// Destruct.
-    virtual ~Renderer();
+    ~Renderer() override;
 
     /// Set number of backbuffer viewports to render.
     void SetNumViewports(unsigned num);
@@ -189,9 +189,9 @@ public:
     /// Set default renderpath.
     void SetDefaultRenderPath(RenderPath* renderPath);
     /// Set default renderpath from an XML file.
-    void SetDefaultRenderPath(XMLFile* file);
+    void SetDefaultRenderPath(XMLFile* xmlFile);
     /// Set default non-textured material technique.
-    void SetDefaultTechnique(Technique* tech);
+    void SetDefaultTechnique(Technique* technique);
     /// Set HDR rendering on/off.
     void SetHDRRendering(bool enable);
     /// Set specular lighting on/off.
@@ -374,7 +374,7 @@ public:
     TextureCube* GetIndirectionCubeMap() const { return indirectionCubeMap_; }
 
     /// Return the instancing vertex buffer
-    VertexBuffer* GetInstancingBuffer() const { return dynamicInstancing_ ? instancingBuffer_ : (VertexBuffer*)0; }
+    VertexBuffer* GetInstancingBuffer() const { return dynamicInstancing_ ? instancingBuffer_.Get() : nullptr; }
 
     /// Return the frame update parameters.
     const FrameInfo& GetFrameInfo() const { return frame_; }
@@ -406,9 +406,9 @@ public:
     /// Allocate a temporary shadow camera and a scene node for it. Is thread-safe.
     Camera* GetShadowCamera();
     /// Mark a view as prepared by the specified culling camera.
-    void StorePreparedView(View* view, Camera* cullCamera);
+    void StorePreparedView(View* view, Camera* camera);
     /// Return a prepared view if exists for the specified camera. Used to avoid duplicate view preparation CPU work.
-    View* GetPreparedView(Camera* cullCamera);
+    View* GetPreparedView(Camera* camera);
     /// Choose shaders for a forward rendering batch. The related batch queue is provided in case it has extra shader compilation defines.
     void SetBatchShaders(Batch& batch, Technique* tech, bool allowShadows, const BatchQueue& queue);
     /// Choose shaders for a deferred light volume batch.

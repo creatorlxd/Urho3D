@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2008-2017 the Urho3D project.
+// Copyright (c) 2008-2018 the Urho3D project.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -262,6 +262,10 @@ static void RegisterScrollView(asIScriptEngine* engine)
     engine->RegisterObjectMethod("ScrollView", "BorderImage@+ get_scrollPanel() const", asMETHOD(ScrollView, GetScrollPanel), asCALL_THISCALL);
     engine->RegisterObjectMethod("ScrollView", "void set_scrollBarsAutoVisible(bool)", asMETHOD(ScrollView, SetScrollBarsAutoVisible), asCALL_THISCALL);
     engine->RegisterObjectMethod("ScrollView", "bool get_scrollBarsAutoVisible() const", asMETHOD(ScrollView, GetScrollBarsAutoVisible), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ScrollView", "void set_horizontalScrollBarVisible(bool)", asMETHOD(ScrollView, SetHorizontalScrollBarVisible), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ScrollView", "bool get_horizontalScrollBarVisible() const", asMETHOD(ScrollView, GetHorizontalScrollBarVisible), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ScrollView", "void set_verticalScrollBarVisible(bool)", asMETHOD(ScrollView, SetVerticalScrollBarVisible), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ScrollView", "bool get_verticalScrollBarVisible() const", asMETHOD(ScrollView, GetVerticalScrollBarVisible), asCALL_THISCALL);
     engine->RegisterObjectMethod("ScrollView", "void set_scrollDeceleration(float)", asMETHOD(ScrollView, SetScrollDeceleration), asCALL_THISCALL);
     engine->RegisterObjectMethod("ScrollView", "float get_scrollDeceleration() const", asMETHOD(ScrollView, GetScrollDeceleration), asCALL_THISCALL);
     engine->RegisterObjectMethod("ScrollView", "void set_scrollSnapEpsilon(float)", asMETHOD(ScrollView, SetScrollSnapEpsilon), asCALL_THISCALL);
@@ -309,6 +313,9 @@ static void RegisterListView(asIScriptEngine* engine)
     engine->RegisterEnumValue("HighlightMode", "HM_ALWAYS", HM_ALWAYS);
 
     RegisterUIElement<ListView>(engine, "ListView");
+    engine->RegisterObjectMethod("ListView", "void UpdateInternalLayout()", asMETHOD(ListView, UpdateInternalLayout), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ListView", "void DisableInternalLayoutUpdate()", asMETHOD(ListView, DisableInternalLayoutUpdate), asCALL_THISCALL);
+    engine->RegisterObjectMethod("ListView", "void EnableInternalLayoutUpdate()", asMETHOD(ListView, EnableInternalLayoutUpdate), asCALL_THISCALL);
     engine->RegisterObjectMethod("ListView", "void SetViewPosition(int, int)", asMETHODPR(ListView, SetViewPosition, (int, int), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("ListView", "void SetScrollBarsVisible(bool, bool)", asMETHOD(ListView, SetScrollBarsVisible), asCALL_THISCALL);
     engine->RegisterObjectMethod("ListView", "void AddItem(UIElement@+)", asMETHOD(ListView, AddItem), asCALL_THISCALL);
@@ -664,7 +671,7 @@ static UIElement* UILoadLayoutFromFile(File* file, UI* ptr)
         return root.Get();
     }
     else
-        return 0;
+        return nullptr;
 }
 
 static UIElement* UILoadLayoutFromVectorBuffer(VectorBuffer& buffer, UI* ptr)
@@ -685,7 +692,7 @@ static UIElement* UILoadLayoutFromFileWithStyle(File* file, XMLFile* styleFile, 
         return root.Get();
     }
     else
-        return 0;
+        return nullptr;
 }
 
 static UIElement* UILoadLayoutFromVectorBufferWithStyle(VectorBuffer& buffer, XMLFile* styleFile, UI* ptr)
@@ -771,6 +778,8 @@ static void RegisterUI(asIScriptEngine* engine)
     engine->RegisterObjectMethod("UI", "const String& get_clipBoardText() const", asMETHOD(UI, GetClipboardText), asCALL_THISCALL);
     engine->RegisterObjectMethod("UI", "void set_doubleClickInterval(float)", asMETHOD(UI, SetDoubleClickInterval), asCALL_THISCALL);
     engine->RegisterObjectMethod("UI", "float get_doubleClickInterval() const", asMETHOD(UI, GetDoubleClickInterval), asCALL_THISCALL);
+    engine->RegisterObjectMethod("UI", "void set_maxDoubleClickDistance(float)", asMETHOD(UI, SetMaxDoubleClickDistance), asCALL_THISCALL);
+    engine->RegisterObjectMethod("UI", "float get_maxDoubleClickDistance() const", asMETHOD(UI, GetMaxDoubleClickDistance), asCALL_THISCALL);
     engine->RegisterObjectMethod("UI", "void set_dragBeginInterval(float)", asMETHOD(UI, SetDragBeginInterval), asCALL_THISCALL);
     engine->RegisterObjectMethod("UI", "float get_dragBeginInterval() const", asMETHOD(UI, GetDragBeginInterval), asCALL_THISCALL);
     engine->RegisterObjectMethod("UI", "void set_dragBeginDistance(int)", asMETHOD(UI, SetDragBeginDistance), asCALL_THISCALL);
